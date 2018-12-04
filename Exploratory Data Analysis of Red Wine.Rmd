@@ -8,6 +8,10 @@ output: html_document
 
 ```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
 
+knitr::opts_chunk$set(fig.width=9,fig.height=5,fig.path='Figs/',
+                      fig.align='center',tidy=TRUE,
+                      echo=FALSE,warning=FALSE,message=FALSE)
+
 # load pachages
 library(ggplot2) # Need this for plotting
 library(gridExtra) # Need this for grid.arrange
@@ -29,22 +33,22 @@ rwine <- read.csv('wineQualityReds.csv', sep = ',')
 ```
 
 ```{r echo=FALSE, Dataset_First_Rows}
+# data set first rows
 head(rwine)
 ```
 
 ```{r echo=FALSE, Dataset_Summary}
+# stats summary
 summary(rwine)
 ```
 
-```{r echo=FALSE, Dataset_Stats}
-describe(rwine)
-```
-
 ```{r echo=FALSE, Dataset_Dim}
+# Data set dimensions
 dim(rwine)
 ```
 
 ```{r echo=FALSE, Dataset_Col_Names}
+# Data set columns names
 names(rwine)
 ```
 
@@ -52,117 +56,181 @@ names(rwine)
 
 ## Histograms to show the distribution of the variable values:
 
-```{r echo=FALSE, Univariate_Hist_Plots}
-p <- ggplot(rwine, aes(x = fixed.acidity)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3)
-
-p1 <- ggplot(rwine, aes(x = volatile.acidity)) + 
-  geom_histogram(color="black", fill="white", binwidth = .003)
-
-p2 <- ggplot(rwine, aes(x = citric.acid)) + 
-  geom_histogram(color="black", fill="white", binwidth = .003)
-
-p3 <- ggplot(rwine, aes(x = residual.sugar)) + 
-  geom_histogram(color="black", fill="white", binwidth = .4)
-
-p4 <- ggplot(rwine, aes(x = chlorides)) + 
-  geom_histogram(color="black", fill="white", binwidth = .03)
-
-p5 <- ggplot(rwine, aes(x = free.sulfur.dioxide)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3)
-
-p6 <- ggplot(rwine, aes(x = total.sulfur.dioxide)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3)
-
-p7 <- ggplot(rwine, aes(x = density)) + 
-  geom_histogram(color="black", fill="white", binwidth = .001)
-
-p8 <- ggplot(rwine, aes(x = pH)) + 
-  geom_histogram(color="black", fill="white", binwidth = .03)
-
-p9 <- ggplot(rwine, aes(x = sulphates)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3)
-
-p10 <- ggplot(rwine, aes(x = quality)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3) +
-  geom_density(alpha=.2, fill="#FF6666")
-
-p11 <- ggplot(rwine, aes(x = alcohol)) + 
-  geom_histogram(color="black", fill="white", binwidth = .3)
-
-grid.arrange(p, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, ncol = 4)
+```{r echo=FALSE, Univariate_Hist_FixedAcidity}
+# histogram for fixed.acidity
+qplot(fixed.acidity, data = rwine, fill = I('#008B8B'), binwidth = .3)
 
 ```
 
-## Boxplots for each of the variables as another indicator of spread.
+```{r echo=FALSE, Univariate_Summary_FixedAcidity}
+# stats summary for fixed.acidity
+summary(rwine$fixed.acidity)
 
-```{r echo=FALSE, Univariate_Box_Plots}
-bp1 <- ggplot(data = rwine, aes(x = "", y = fixed.acidity)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 18)) +
-  labs(x = "Fixed Acidity", y = "")
-
-bp2 <- ggplot(data = rwine, aes(x = "", y = volatile.acidity)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 1.5)) +
-  labs(x = "Volatile Acidity", y = "")
-
-bp3 <- ggplot(data = rwine, aes(x = "", y = citric.acid)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 1.2)) +
-  labs(x = "Citrix Acid", y = "")
-
-bp4 <- ggplot(data = rwine, aes(x = "", y = residual.sugar)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 17)) +
-  labs(x = "Residual Sugar", y = "")
-
-bp5 <- ggplot(data = rwine, aes(x = "", y = chlorides)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, .8)) +
-  labs(x = "Chlorides", y = "")
-
-bp6 <- ggplot(data = rwine, aes(x = "", y = free.sulfur.dioxide)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 70)) +
-  labs(x = "Free Sulfur Dioxide", y = "")
-
-bp7 <- ggplot(data = rwine, aes(x = "", y = total.sulfur.dioxide)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 175)) +
-  labs(x = "Total Sulfur Dioxide", y = "")
-
-bp8 <- ggplot(data = rwine, aes(x = "", y = density)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0.98, 1.01)) +
-  labs(x = "Density", y = "")
-
-bp9 <- ggplot(data = rwine, aes(x = "", y = pH)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(2.5, 5)) +
-  labs(x = "pH", y = "")
-
-bp10 <- ggplot(data = rwine, aes(x = "", y = sulphates)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 2.5)) +
-  labs(x = "Sulphates", y = "")
-
-bp11 <- ggplot(data = rwine, aes(x = "", y = quality)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(0, 9)) +
-  labs(x = "Quality", y = "")
-
-bp12 <- ggplot(data = rwine, aes(x = "", y = alcohol)) + 
-  geom_boxplot() +
-  coord_cartesian(ylim = c(7, 18)) +
-  labs(x = "Alcohol", y = "")
-
-grid.arrange(bp1, bp2, bp3, bp4, bp5, bp6, bp7, bp8, bp9, bp10, bp11, bp12, ncol = 6)
 ```
 
-## Observations regarding variables: 
+> Max values for fixed acidity is 15.90 and min is 4.60. There are some outliers
+
+```{r echo=FALSE, Univariate_Hist_VolatileAcidity}
+# histogram for volatile.acidity
+qplot(volatile.acidity, data = rwine, fill = I('#008B8B'), binwidth = .01)
+
+```
+
+```{r echo=FALSE, Univariate_Summary_Volatile}
+# stats for volatile.acidity
+summary(rwine$volatile.acidity)
+
+```
+
+> Max value is 1.58 and min 0.12. There are some outliers.
+
+```{r echo=FALSE, Univariate_Hist_CitricAcid}
+# histogram for citric.acid
+qplot(citric.acid, data = rwine, fill = I('#008B8B'), binwidth = .01)
+
+```
+
+```{r echo=FALSE, Univariate_Summary_CitricAcid}
+# stats for citric.acid
+summary(rwine$citric.acid)
+
+```
+
+> The min value for citric.acid is 0.000 and max value is 1.00. Histogram illustrate that most those values are equal to 0.000. Some outliers too.
+
+```{r echo=FALSE, Univariate_Hist_ResidualSugar}
+# histogram for residual.sugar
+qplot(residual.sugar, data = rwine, fill = I('#008B8B'), binwidth = .3)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_residual.sugar}
+# stats for residual.sugar
+summary(rwine$residual.sugar)
+
+```
+
+> We notice an irregular shape for residual.sugar. Max value is 15.50 and min 0.900. There are some outliers.
+
+```{r echo=FALSE, Univariate_Hist_Chlorides}
+# histogram for chlorides
+qplot(chlorides, data = rwine, fill = I('#008B8B'), binwidth = .01)
+
+```
+
+```{r echo=FALSE, Univariate_Summary_Chlorides}
+# stats for chlorides
+summary(rwine$chlorides)
+
+```
+
+> The min value is 0.012 and max value is 0.6. Histogram shows that most value count are found 0.04 and 1.4. There are some outliers.
+
+```{r echo=FALSE, Univariate_Hist_free.sulfur.dioxide}
+# histogram for free.sulfur.dioxide
+qplot(free.sulfur.dioxide, data = rwine, fill = I('#008B8B'), binwidth = 1)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_free.sulfur.dioxide}
+# stats for free.sulfur.dioxide
+summary(rwine$free.sulfur.dioxide)
+
+```
+
+> There are some outliers. Most value count are found within 2 and 20
+
+```{r echo=FALSE, Univariate_Hist_total.sulfur.dioxide}
+# histogram for total.sulfur.dioxide
+qplot(total.sulfur.dioxide, data = rwine, fill = I('#008B8B'), binwidth = 3)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_total.sulfur.dioxide}
+# stats for total.sulfur.dioxide
+summary(rwine$total.sulfur.dioxide)
+
+```
+
+> Plot seens right skewed. There are some outliers. Max value is 289 and min 6.00
+
+```{r echo=FALSE, Univariate_Hist_density}
+# histogram for density
+qplot(density, data = rwine, fill = I('#008B8B'), binwidth = .001)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_density}
+# stats for density
+summary(rwine$density)
+
+```
+
+> Plot seens normal distribute. Max value is 1.0037 and min 0.9901
+
+```{r echo=FALSE, Univariate_Hist_pH}
+# histogram for volatile.acidity
+qplot(pH, data = rwine, fill = I('#008B8B'), binwidth = .03)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_pH}
+# stats for sulpahtes
+summary(rwine$pH)
+
+```
+
+> Plot seems noral distribute with some outliers.
+
+```{r echo=FALSE, Univariate_Hist_sulphates}
+# histogram for sulphates
+qplot(sulphates, data = rwine, fill = I('#008B8B'), binwidth = .03)
+
+```
+
+
+```{r echo=FALSE, Univariate_Summary_sulphates}
+# stats for sulphates
+summary(rwine$sulphates)
+
+```
+
+> There are some outliers. Most value count fall within 0.3 and 0.9.
+
+```{r echo=FALSE, Univariate_Hist_alcohol}
+# histogram for sulphates
+qplot(alcohol, data = rwine, fill = I('#008B8B'), binwidth = .3)
+
+```
+
+```{r echo=FALSE, Univariate_Summary_alcohol}
+# stats for alcohol
+summary(rwine$alcohol)
+
+```
+
+> Plot seems right skewed. There are some outliers.
+
+```{r echo=FALSE, Univariate_Hist_quality}
+# histogram for quality
+qplot(quality, data = rwine, fill = I('#008B8B'), binwidth = .1)
+
+```
+
+```{r echo=FALSE, Univariate_Summary_quality}
+# stats for quality
+summary(rwine$quality)
+
+```
 
 > Quality has a small proportion in the categories 3, 4, 8, 9 and the highest proportion in the categories 5, 6, and 7. None in the categories 1, 2, and 10.
+
+## Observations regarding variables: 
 
 > Residual sugar has a positive skewed distribution.
 
@@ -219,79 +287,78 @@ of the data? If so, why did you do this?
 
 ```{r echo=FALSE, Bivariate_Plots}
 
+# qc.cat and alcohol
 qc.cat_alcohol <- qplot(x = qc.cat, y = alcohol, 
       data = rwine,
       geom = "boxplot")
 
+# qc.cat and sulphates
 qc.cat_sulphates <- qplot(x = qc.cat, y = sulphates, 
       data = rwine,
       geom = "boxplot")
 
+# qc.cat and density
 qc.cat_density <- qplot(x = qc.cat, y = density, 
       data = rwine,
       geom = "boxplot")
 
+# qc.cat and citric.acid
 qc.cat_citric <- qplot(x = qc.cat, y = citric.acid, 
       data = rwine,
       geom = "boxplot")
 
+# qc.cat and fixed.acidity
 qc.cat_fixed <- qplot(x = qc.cat, y = fixed.acidity, 
       data = rwine,
       geom = "boxplot")
 
+# display plots in one fig
 grid.arrange(qc.cat_alcohol, qc.cat_sulphates, qc.cat_density, qc.cat_citric, qc.cat_fixed, ncol = 3)
 ```
 
 > Quality increases with high levels of alcohol, fixed.acidity, density, sulphates, citric.acid.
 
-```{r echo=FALSE, Bivariate_Plots_3}
-alcohol_qc <- ggplot(aes(x = alcohol), data = rwine) + 
-  geom_histogram(binwidth = .5,
-      color = I('black'), fill = I('#7FFFD4')) +
-  facet_wrap(~quality) +
-  ggtitle('alcohol and quality') 
-
-alcohol_qc
+```{r echo=FALSE, Bivariate_Sctter_Plots_QC_Alcohol}
+# Scatterplot Review of quality and alcohol
+ggplot(aes(x = quality, y = alcohol), data = rwine) +
+  geom_jitter(alpha = 1/3) +
+  ggtitle('Scatterplot Review of quality and alcohol')
 ```
 
 > red wines within cat 5 and cat 6 are the one with highest alcohol content. 
 
-```{r echo=FALSE, Density_Plots_1}
-density_qc <- ggplot(aes(x = density), data = rwine) + 
-  geom_density() +
-  #geom_histogram(binwidth = .5,
-  #    color = I('black'), fill = I('#7FFFD4')) +
-  facet_wrap(~quality) +
-  ggtitle('density and quality') 
-
-density_qc
+```{r echo=FALSE, Bivariate_Scatter_Plots_QC_DEnsity}
+# Scatterplot Review of quality and alcohol
+ggplot(aes(x = quality, y = density), data = rwine) +
+  geom_jitter(alpha = 1/3) +
+  ggtitle('Scatterplot Review of quality and density')
 ```
 
-> In this plot we observe that those wine that fall in the categorie 4 and 5 have the highest density. It start to decrease after cat 6.
+> In this plot we observe that those wine that fall in the categorie 5 and 6 have the highest density. It is low in cat 3, cat4, cat7, and cat8
 
-```{r echo=FALSE, Density_Plots_2}
-ggplot(aes(x = citric.acid), data = rwine) + 
-  geom_density()+
-  facet_wrap(~quality)+
-  ggtitle('citric.acid and Quality')
+```{r echo=FALSE, Bivariate_Sctter_Plots_QC_citric.acid}
+# Scatterplot Review of quality and citric.acid
+ggplot(aes(x = quality, y = citric.acid), data = rwine) +
+  geom_jitter(alpha = 1/3) +
+  ggtitle('Scatterplot Review of quality and citric.acid')
 
 ```
 
-> We find citric acid level are the lowest in cat 3, cat 4, and cat8. Cat 5 and cat 6 have the highest levels.
+> We find citric acid level are the low in cat 3, cat 4, and cat8. Cat 5 and cat 6 have the highest levels.
 
-```{r echo=FALSE, Multivariate_Plots_10}
-sulphates_qc <- ggplot(aes(x = sulphates), data = rwine) + 
-  geom_density() +
-  #geom_histogram(binwidth = .5,
-     #color = I('black'), fill = I('#7FFFD4')) +
-  facet_wrap(~quality)+
-  ggtitle('sulphates and Quality')
 
-sulphates_qc
+```{r echo=FALSE, Bivariate_Scatter_Plots_QC_sulphates}
+# Scatterplot Review of quality and sulphates
+ggplot(aes(x = quality, y = sulphates), data = rwine) +
+  geom_jitter(alpha = 1/3) +
+  ggtitle('Scatterplot Review of quality and sulphates')
 
 ```
 
-```{r echo=FALSE, Multivariate_Plots_1}
+>  We find sulphates level are the low in cat 3, cat 4, and cat8. Cat 5 and cat 6 have the highest levels.
+
+```{r echo=FALSE, warning=FALSE,message=FALSE, Multivariate_Plots_1}
+# Scatterplot Review of quality and sulphates
 sc_sulphates_qc <- ggplot(aes(x = quality, y = sulphates), data = rwine) +
   geom_jitter(alpha = 1/5) +
   xlim(3,quantile(rwine$quality, 0.99))+ 
@@ -299,6 +366,7 @@ sc_sulphates_qc <- ggplot(aes(x = quality, y = sulphates), data = rwine) +
   stat_smooth(method = 'lm') + 
   ggtitle('Scatterplot Review of quality and sulphates')
 
+# display plot
 sc_sulphates_qc
 
 ```
@@ -310,6 +378,8 @@ sc_sulphates_qc
 ## Plots for not the main feature(s) of interest (pH, residual.sugar, chlorides, free.sulfur.dioxide, total.sulfur.dioxide)
 
 ```{r echo=FALSE, Pairwise_scatterplots_0}
+
+# quality and ph
 sc_ph <- ggplot(aes(x = quality, y = pH), 
         data = rwine) +
   geom_jitter( alpha = .5)  +
@@ -319,6 +389,7 @@ sc_ph <- ggplot(aes(x = quality, y = pH),
                shape = 8, 
                size = 4)
 
+# quality and residual.sugar
 sc_residual <- ggplot(aes(x = quality, y = residual.sugar), 
         data = rwine) +
   geom_jitter( alpha = .5)  +
@@ -328,6 +399,7 @@ sc_residual <- ggplot(aes(x = quality, y = residual.sugar),
                shape = 8, 
                size = 4)
 
+# quality and chlorides
 sc_chlorides <- ggplot(aes(x = quality, y = chlorides), 
         data = rwine) +
   geom_jitter( alpha = .5)  +
@@ -337,6 +409,7 @@ sc_chlorides <- ggplot(aes(x = quality, y = chlorides),
                shape = 8, 
                size = 4)
 
+# quality and free.sulfur.dioxide
 sc_fsulfur <- ggplot(aes(x = quality, y = free.sulfur.dioxide), 
         data = rwine) +
   geom_jitter( alpha = .5)  +
@@ -346,6 +419,7 @@ sc_fsulfur <- ggplot(aes(x = quality, y = free.sulfur.dioxide),
                shape = 8, 
                size = 4)
 
+# quality and toatl.sulfur.dioxide
 sc_tsulfur <- ggplot(aes(x = quality, y = total.sulfur.dioxide), 
         data = rwine) +
   geom_jitter( alpha = .5)  +
@@ -355,6 +429,7 @@ sc_tsulfur <- ggplot(aes(x = quality, y = total.sulfur.dioxide),
                shape = 8, 
                size = 4)
 
+# display plots in fig
 grid.arrange(sc_ph, sc_residual, sc_chlorides, sc_fsulfur, sc_tsulfur, ncol = 3)
 
 ```
@@ -363,7 +438,8 @@ grid.arrange(sc_ph, sc_residual, sc_chlorides, sc_fsulfur, sc_tsulfur, ncol = 3)
 
 ### Correlation between Chemical Attributes
 
-```{r echo=FALSE, Pairwise_scatterplots_1}
+```{r echo=FALSE, warning=FALSE, message=FALSE, Scatterplots_ph_fixed.acidity_Cor}
+# Scatterplots ph and fixed.acidity Correlation
 fixed_pH <- ggplot(aes(pH, fixed.acidity), data = rwine)+ geom_jitter()+
   xlim(3,quantile(rwine$pH, 0.99))+ 
   ylim(6,quantile(rwine$fixed.acidity, 0.99))+
@@ -372,28 +448,32 @@ fixed_pH <- ggplot(aes(pH, fixed.acidity), data = rwine)+ geom_jitter()+
 fixed_pH
 ```
 
-```{r echo=FALSE, Correlation_1}
+```{r echo=FALSE, Correlation_Between_pH_fixed.acidity}
+# Correlation between pH fixed.acidity
 cor.test(rwine$pH, rwine$fixed.acidity)
 ```
 
 > It is noticible that fixed.acidity and pH have a negative correlation. When fixed.acidity increase ph levels decrease. 
 
-```{r echo=FALSE, Pairwise_scatterplots}
-fixed_qc <- ggplot(aes(quality, fixed.acidity), data = rwine)+ geom_jitter()+
-  xlim(3,quantile(rwine$quality, 0.99))+ 
-  ylim(6,quantile(rwine$fixed.acidity, 0.99))+
+```{r echo=FALSE, warning=FALSE, message=FALSE, Scatterplots_fixed.acidity_QC_Cor}
+# Scatterplots between fixed.acidity and quality corelation
+fixed_qc <- ggplot(aes(quality, fixed.acidity), data = rwine)+ geom_jitter() +
+  xlim(3,quantile(rwine$quality, 0.99)) + 
+  ylim(6,quantile(rwine$fixed.acidity, 0.99)) +
   stat_smooth(method='lm')
 
 fixed_qc
 ```
 
-```{r echo=FALSE, Correlation_2}
+```{r echo=FALSE, Correlation_Between_QC_fixed.acidity}
+# Correlation between QC and fixed.acidity
 cor.test(rwine$quality, rwine$fixed.acidity)
 ```
 
 > There is positive correlation between fixed.acidity and quality. As the fixed.acidity increase quality gets better.
 
-```{r echo=FALSE, Pairwise_scatterplots_01}
+```{r echo=FALSE, warning=FALSE, message=FALSE, Scatterplots_Alcohol_QC_Cor}
+# Scatterplots between Alcohol and QC Correlation
 alcohol_qc <- ggplot(aes(quality, alcohol), data = rwine)+ geom_jitter()+
   xlim(3,quantile(rwine$quality, 0.99))+ 
   ylim(6,quantile(rwine$alcohol, 0.99))+
@@ -402,36 +482,42 @@ alcohol_qc <- ggplot(aes(quality, alcohol), data = rwine)+ geom_jitter()+
 alcohol_qc
 ```
 
-```{r echo=FALSE, Correlation_3}
+```{r echo=FALSE, warning=FALSE, message=FALSE, Correlation_Between_QC_Alcohol}
+# Correlation between QCand Alcohol
 cor.test(rwine$quality, rwine$alcohol)
 ```
 
 > It is clear that higher the alcohol content the better the quality gets.
 
 
-```{r echo=FALSE, Correlation_4}
+```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=7, fig.width=9, ggpairs}
+# ggpais
 rwine.subset <- rwine[,2:12]
 ggpairs(rwine.subset, wrap = c(shape = I('.'), outlier.shape = I('.')))
 ```
 
 > The highest positive correlatoin is between [fixed.acidity, density] and [fixed.acidity, citric.acid]
 
-```{r echo=FALSE, Correlation_5}
+```{r echo=FALSE, Highest_Correlation}
+# plot correlation between fixed.acidity and density
 fixed_den <- ggplot(aes(x = fixed.acidity, y = density), data = rwine) + 
   geom_jitter(alpha = 1/5) +
   geom_smooth(method = "lm", color = "blue")
 
+# plot correlation between fixed.acidity and citric.acid
 fixed_citric <- ggplot(aes(x = fixed.acidity, y = citric.acid), data = rwine) + 
   geom_jitter(alpha = 1/5) +
   geom_smooth(method = "lm", color = "blue")
 
+# display plot in one fig
 grid.arrange(fixed_den, fixed_citric, ncol = 2)
 ```
 
+> As ggpais showed us, there is a positive correlation between [fixed.acidity, density] and [fixed.acidity, citric.acid]
 
+```{r echo=FALSE, Multiple_Correlations}
 
-```{r echo=FALSE, Correlation_6}
-
+# code below will print correlation for some features
 print('pH and Alcohol Correlation')
 cor.test(rwine$quality, rwine$pH)
 
@@ -473,17 +559,19 @@ the dataset?
 
 # Multivariate Plots Section
 
-```{r echo=FALSE, Multivariate_Scatter_Plots}
+```{r echo=FALSE, warning=FALSE, message=FALSE, Multivariate_Scatter_Plots}
+# Multivariate_Scatter_Plots log(fixed.acidity) and alcohol with quality factor for the colour
 fixed_log <- ggplot(aes(x = log10(fixed.acidity), y = alcohol, colour = quality.factor), 
        data = rwine) + 
-  geom_point(aes(size = quality.factor)) +
-  scale_color_brewer(type = 'div', palette="Set1") +
+  geom_point() +
+  scale_color_brewer(type = 'div', palette="RdYlBu", direction = -1, name = "Quality") +
   scale_x_continuous(lim=c(quantile(log10(rwine$fixed.acidity), 0.01),
                            quantile(log10(rwine$fixed.acidity), 0.99)))+
   scale_y_continuous(lim=c(quantile(rwine$alcohol, 0.01),
                            quantile(rwine$alcohol, 0.99))) +
   ggtitle('Fixed Acidity (log10) vs Alcohol with Quality Factor')
 
+# display plot
 fixed_log
 
 ```
@@ -492,9 +580,11 @@ fixed_log
 
 
 ```{r echo=FALSE, Multivariate_Scatter_Plots_1}
+# # Multivariate_Scatter_Plots quality and alcohol with fixed.acidity for the colour
 ggplot(aes(alcohol, quality, color=fixed.acidity), data = rwine) + 
-  geom_point(alpha = 0.5, size = 2, position = 'jitter')+ 
-  ggtitle('Quality vs Alcohol with Fixed Acidity content') 
+  geom_point(alpha = 0.8, size = 2, position = 'jitter')+ 
+  ggtitle('Quality vs Alcohol with Fixed Acidity content')  +
+  scale_color_gradient2(midpoint = median(rwine$fixed.acidity))
 
 ```
 
@@ -535,6 +625,7 @@ mtable(m1, m2, m3, m4)
 
 ### Plot One
 ```{r echo=FALSE, Plot_One}
+# bloxplot to display relationshi between important features
 grid.arrange(qc.cat_alcohol, qc.cat_sulphates, qc.cat_density, qc.cat_citric, qc.cat_fixed, ncol = 3)
 
 ```
@@ -544,7 +635,8 @@ grid.arrange(qc.cat_alcohol, qc.cat_sulphates, qc.cat_density, qc.cat_citric, qc
 > Red Wine quality increase when it have high levels of alcohol, density, citric.acid, fixed.acidity. Volatile.acidity actual decrease wine quality.
 
 ### Plot Two
-```{r echo=FALSE, Plot_Two}
+```{r echo=FALSE, warning=FALSE,message=FALSE, Plot_Two}
+# scatterplot for quality and sulphates correaltion
 sc_sulphates_qc
 
 ```
@@ -555,9 +647,11 @@ sc_sulphates_qc
 
 ### Plot Three
 ```{r echo=FALSE, Plot_Three}
+# Quality vs Alcohol with Fixed Acidity content
 ggplot(aes(alcohol, quality, color=fixed.acidity), data = rwine) + 
-  geom_point(alpha = 0.5, size = 2, position = 'jitter')+ 
-  ggtitle('Quality vs Alcohol with Fixed Acidity content')
+  geom_point(alpha = 0.8, size = 2, position = 'jitter')+ 
+  ggtitle('Quality vs Alcohol with Fixed Acidity content')  +
+  scale_color_gradient2(midpoint = median(rwine$fixed.acidity))
 ```
 
 ### Description Three
